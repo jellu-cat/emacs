@@ -75,3 +75,8 @@ gcc automata-nat.c nat
 gcc automata-nat.c -o nat
 nat 
 nat 
+gcc automata-no-control.c -o nocon
+./nocon P1-28-03-23-AUTOMATA-1.txt 
+./nocon 00
+./nocon D130372I3
+./nocon P1-28-03-23-AUTOMATA-1.txt 130372I3

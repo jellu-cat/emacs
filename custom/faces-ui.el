@@ -13,7 +13,7 @@
 		    :weight 'medium )
 
 (set-face-attribute 'variable-pitch nil
-		    :font "Iosevka Etoile 12"
+		    :font "Iosevka Etoile 11"
 		    :weight 'medium )
 
 ;; for emacs client
@@ -24,6 +24,14 @@
           (lambda ()
             (variable-pitch-mode 1)))
 
+(setq doom-modeline-height 1) ; optional
+(custom-set-faces
+ '(mode-line
+   ((t (:family "Fira Code 11" :height 0.9))))
+ '(mode-line-active
+   ((t (:family "Fira code 11" :height 0.9)))) ; For 29+
+ '(mode-line-inactive
+   ((t (:family "Fira code 11" :height 0.9)))))
 
                                         ; Ligatures ---------------
 (use-package ligature

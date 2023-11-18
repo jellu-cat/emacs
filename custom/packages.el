@@ -9,6 +9,7 @@
                          ("melpa" . "https://melpa.org/packages/")
                          ("melpa-stable" . "https://stable.melpa.org/packages/")
                          ("org" . "https://orgmode.org/elpa/")
+                         ("nongnu" . "https://elpa.nongnu.org/nongnu/")
                          ("elpa" . "https://elpa.gnu.org/packages/")))
 
 (package-initialize)
@@ -22,43 +23,49 @@
 (require 'use-package)
 
                                         ; --- Key-related ---
-(use-package evil
-  :ensure t  ;; install if it's not installed
-  :init      ;; configure evil before loading it
-  (setq evil-want-integration t)
-  ;; (setq evil-want-keybindig nil)
-  :config
-  (evil-mode 1))
+ (use-package meow
+ :ensure t)
 
-;; (use-package evil-collection
-;; :after evil
-;; :ensure t
-;; :config
-;; (evil-collection-init))
+ (use-package evil
+   :ensure t  ;; install if it's not installed
+   :init      ;; configure evil before loading it
+   (setq evil-want-integration t)
+   ;; (setq evil-want-keybindig nil)
+   :hook (char-mode . (lambda () evil-mode -1))
+   :config
+   (evil-mode 1)
+   (evil-set-initial-state 'char-mode 'emacs)
+   (evil-set-initial-state 'term-mode 'emacs))
 
-(use-package god-mode
-  :ensure t
-  :config
-  (setq god-exempt-major-modes nil)
-  (setq god-exempt-predicates nil))
+;; ;; (use-package evil-collection
+;; ;; :after evil
+;; ;; :ensure t
+;; ;; :config
+;; ;; (evil-collection-init))
 
-(use-package which-key
-  :ensure t
-  :config (which-key-enable-god-mode-support))
-(which-key-mode)
+ (use-package god-mode
+   :ensure t
+   :config
+   (setq god-exempt-major-modes nil)
+   (setq god-exempt-predicates nil))
 
-(use-package evil-org
-  :ensure t
-  :after org
-  :hook (org-mode . (lambda () evil-org-mode))
-  :config
-  (require 'evil-org-agenda)
-  (evil-org-agenda-set-keys))
+ (use-package which-key
+   :ensure t
+   :config (which-key-enable-god-mode-support))
+ (which-key-mode)
 
-(use-package evil-nerd-commenter
-  :ensure t
-  :config (evilnc-default-hotkeys)
-  :defer t)
+;; (use-package evil-org
+;;   :ensure t
+;;   :after org
+;;   :hook (org-mode . (lambda () evil-org-mode))
+;;   :config
+;;   (require 'evil-org-agenda)
+;;   (evil-org-agenda-set-keys))
+
+;; (use-package evil-nerd-commenter
+;;   :ensure t
+;;   :config (evilnc-default-hotkeys)
+;;   :defer t)
 
 (use-package general
   :ensure t
@@ -70,6 +77,9 @@
   :ensure t
   :init
   (vertico-mode))
+
+(use-package consult
+  :ensure t)
 
 (use-package orderless
   :ensure t
@@ -88,7 +98,16 @@
   :init
   (savehist-mode))
 
-                                        ; --- Aesthetics ---
+(use-package harpoon
+  :ensure t)
+
+(use-package saveplace
+  :ensure t
+  :init (save-place-mode 1))
+
+(setq desktop-path '("~/.config/emacs/custom/desktop/"))
+
+                                       ; --- Aesthetics ---
 (use-package highlight-indent-guides
   :ensure t
   :init
@@ -145,10 +164,11 @@
 (use-package tree-sitter
   :ensure t
   :hook prog-mode)
+;;(tree-sitter-hl-mode 1)
 
-(use-package tree-sitter-langs
-  :ensure t
-  :hook prog-mode)
+;; (use-package tree-sitter-langs
+;;   :ensure t
+;;   :hook prog-mode)
 
 (use-package flycheck
   :ensure t
@@ -160,6 +180,9 @@
          (prog-mode . lsp-deferred)
          (lsp-mode . lsp-enable-which-key-integration)))
 
+(use-package lsp-ui
+ :ensure t)
+
 (use-package lsp-treemacs
   :ensure t
   :commands lsp-treemacs-error-list)
@@ -167,6 +190,9 @@
 (use-package dap-mode
   :ensure t
   :hook prog-mode)
+
+(use-package eldoc-box
+  :ensure t)
 
 (with-eval-after-load 'lsp-mode
   (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
@@ -207,6 +233,8 @@
 (use-package mixed-pitch
   :ensure t
   :hook text-mode)
+(add-hook 'text-mode-hook (lambda () (company-mode -1)))
+
 
 (use-package org-appear
   :hook org-mode)

@@ -2,32 +2,30 @@
 
 ;;; Commentary:
 
-;;; Code:
-
-;; commented, i will be using control-mode instead
-;; (nvmap :prefix "SPC"
-;; "SPC"   '(execute-extended-command :which-key "M-x")
-;; "."     '(find-file :which-key "Find file")
-;; "s"     '(save-buffer :which-key "save")
-;; 
-;; ;; eshell
-;; "e s"     '(eshell :which-key "esh")
-;; "e h"     '(counsel-esh-history :which-key "esh history")
-;; 
-;; ;; misc
-;; "o p"     '( (lambda () (interactive) (load-file "~/.config/emacs/init.el")) :which-key "reload config")
-;; "t t"     '(toggle-truncate-lines :which-key "toggle truncate lines")
-;; )
+;; prevent esc from deleting windows
+(defadvice keyboard-escape-quit
+  (around keyboard-escape-quit-dont-close-windows activate)
+  (let ((buffer-quit-function (lambda () ())))
+    ad-do-it))
 
 (general-define-key
  "<escape>" 'keyboard-escape-quit
-
  "C-+" 'text-scale-increase
  "C--" 'text-scale-decrease
-
- "C-;" 'evil-normal-state
-
+ "C-z" 'evil-normal-state
  "C-e" 'execute-extended-command)
+
+(global-unset-key (kbd "C-SPC"))
+
+(defvar jellu-mode-map (make-keymap) "Jellu minor mode keymap.")
+(define-minor-mode jellu-mode
+  "Jellu mode with all the important keybindings."
+  :init-value 1
+  :global t
+  :lighter " jellu"
+  :keymap jellu-mode-map
+  )
+(jellu-mode 1)
 
                                         ; --- windows ---
 (global-unset-key (kbd "C-w"))
@@ -48,7 +46,10 @@
                       "C-m" 'delete-other-windows
                       "C-q" 'delete-window
                       )
-  (global-set-key (kbd "C-w") window-cmd)
+(global-set-key (kbd "C-w") window-cmd)
+(general-define-key :keymaps 'jellu-mode-map
+                   "C-w" 'window-cmd
+                   )
   )
 
                                         ; --- buffers ---
@@ -57,14 +58,25 @@
   (define-prefix-command 'buffer-cmd)
 
   (general-define-key :keymaps 'buffer-cmd
-                      "C-b" 'ibuffer
+                      "C-b" 'consult-buffer
                       "C-k" 'kill-current-buffer
                       "C-n" 'next-buffer
                       "C-p" 'previous-buffer
-                      "C-l" 'ibuffer-list-buffers
+                      ;; "C-l" 'ibuffer-list-buffers
                       )
-  (global-set-key (kbd "C-b") buffer-cmd)
-  )
+(general-define-key :keymaps 'jellu-mode-map
+                   "C-b" 'buffer-cmd
+                   )
+)
+
+                                        ; --- C-x ---
+(general-define-key :keymaps 'ctl-x-map
+                   "C-r" 'consult-recent-file
+                    )
+
+;; (meow-leader-define-key
+;;  '("w" . window-cmd)
+;;  '("b" . buffer-cmd))
 
                                         ; --- god-mode ---
 (evil-define-key
@@ -76,6 +88,11 @@
           :which-key "toggle comment in a line")
   "c b" '(evilnc-quick-comment-or-uncomment-to-the-line
           :which-key "toggle comment in multiple lines"))
+
+                                        ; --- elisp-mode ---
+(general-define-key
+ :keymaps 'emacs-lisp-mode-map
+                    "C-c C-c" 'eval-buffer)
 
 (provide 'keybindings)
 ;;; keybindings.el ends here

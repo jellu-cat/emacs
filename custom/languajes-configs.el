@@ -15,8 +15,13 @@
       treemacs-space-between-root-nodes nil
       company-idle-delay 0.0
       company-minimum-prefix-length 1
-      lsp-idle-delay 0.1)  ;; clangd is fast
+      lsp-idle-delay 0.1
+      lsp-signature-auto-activate nil
+      )
+
+lsp-ui-sideline-show-diagnostics
+lsp-ui-doc-enable
+lsp-ui-sideline-update-mode
 
 (provide 'languajes-configs)
 ;;; languajes-configs.el ends here
-

@@ -4,6 +4,7 @@ elpa
 .lsp-*
 .dap*
 eshell
+history
 #*
 ~*
 projectile-bookmarks.eld

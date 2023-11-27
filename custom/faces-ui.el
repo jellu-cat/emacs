@@ -13,7 +13,7 @@
 		    :weight 'medium )
 
 (set-face-attribute 'variable-pitch nil
-		    :font "Iosevka Etoile 11"
+		    :font "Iosevka 11"
 		    :weight 'medium )
 
 ;; for emacs client

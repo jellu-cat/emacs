@@ -23,36 +23,35 @@
 (require 'use-package)
 
                                         ; --- Key-related ---
- (use-package meow
- :ensure t)
 
- (use-package evil
-   :ensure t  ;; install if it's not installed
-   :init      ;; configure evil before loading it
-   (setq evil-want-integration t)
-   ;; (setq evil-want-keybindig nil)
-   :hook (char-mode . (lambda () evil-mode -1))
-   :config
-   (evil-mode 1)
-   (evil-set-initial-state 'char-mode 'emacs)
-   (evil-set-initial-state 'term-mode 'emacs))
+(use-package evil
+  :ensure t  ;; install if it's not installed
+  :init      ;; configure evil before loading it
+  (setq evil-want-integration t)
+  ;; (setq evil-want-keybindig nil)
+  :hook (char-mode . (lambda () evil-mode -1))
+  :config
+  (evil-mode 1)
+  (evil-set-initial-state 'term-mode 'insert)
+  )
 
-;; ;; (use-package evil-collection
-;; ;; :after evil
-;; ;; :ensure t
-;; ;; :config
-;; ;; (evil-collection-init))
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
 
- (use-package god-mode
-   :ensure t
-   :config
-   (setq god-exempt-major-modes nil)
-   (setq god-exempt-predicates nil))
+(use-package god-mode
+  :ensure t
+  :config
+  (setq god-exempt-major-modes nil)
+  (setq god-exempt-predicates nil))
 
- (use-package which-key
-   :ensure t
-   :config (which-key-enable-god-mode-support))
- (which-key-mode)
+(use-package which-key
+  :ensure t
+  :config (which-key-enable-god-mode-support))
+
+(which-key-mode)
 
 ;; (use-package evil-org
 ;;   :ensure t
@@ -72,7 +71,7 @@
   :config
   (general-evil-setup t))
 
-                                      ; --- Completion ---
+                                        ; --- Completion ---
 (use-package vertico
   :ensure t
   :init
@@ -107,7 +106,7 @@
 
 (setq desktop-path '("~/.config/emacs/custom/desktop/"))
 
-                                       ; --- Aesthetics ---
+                                        ; --- Aesthetics ---
 (use-package highlight-indent-guides
   :ensure t
   :init
@@ -161,18 +160,18 @@
   :defer t)
 
                                         ; --- LSP & Tree-sitter ---
-(use-package tree-sitter
-  :ensure t
-  :hook prog-mode)
+;; (use-package tree-sitter
+;;  :ensure t
+;;  :hook prog-mode)
 ;;(tree-sitter-hl-mode 1)
 
 ;; (use-package tree-sitter-langs
 ;;   :ensure t
 ;;   :hook prog-mode)
 
-(use-package flycheck
-  :ensure t
-  :hook prog-mode)
+;; (use-package flycheck
+;;   :ensure t
+;;  :hook prog-mode)
 
 (use-package lsp-mode
   :ensure t
@@ -181,7 +180,7 @@
          (lsp-mode . lsp-enable-which-key-integration)))
 
 (use-package lsp-ui
- :ensure t)
+  :ensure t)
 
 (use-package lsp-treemacs
   :ensure t
@@ -200,8 +199,9 @@
   (yas-global-mode))
 
                                         ; --- Literate proggraming ---
-; (use-package literate-calc-mode
-  ; :ensure t)
+
+;; (use-package literate-calc-mode
+;; :ensure t)
 
 (use-package ein
   :ensure t)
@@ -219,43 +219,82 @@
 (add-hook 'after-init-hook 'electric-pair-mode)
 
                                         ; --- Proyect management ---
-(use-package projectile
-  :ensure t
-  :hook prog-mode)
+;; (use-package projectile
+;;   :ensure t
+;;   :hook prog-mode)
 
-                                       ; --- Org Mode ---
+                                        ; --- Org Mode ---
 (use-package org-superstar
   :ensure t
   :hook org-mode
   :config
   (setq org-superstar-special-todo-items t))
 
-(use-package mixed-pitch
-  :ensure t
-  :hook text-mode)
-(add-hook 'text-mode-hook (lambda () (company-mode -1)))
-
+(use-package org-bullets
+  :ensure t)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
 (use-package org-appear
+  :ensure t
   :hook org-mode)
 
 (use-package org-modern
   :ensure t
-  :hook org-mode)
+  :hook
+  (org-mode . org-modern-mode))
+
+(use-package pdf-tools
+  :ensure t
+  :init (pdf-tools-install))
 
                                         ; ; --- Major modes ---
-; (use-package lua-mode
-  ; :ensure t)
+
+;;(use-package lua-mode
+;; :ensure t)
 
 ;; (use-package markdown-mode
 ;;   :ensure t
 ;;   :mode ("README\\.md\\" . gfm-mode)
 ;;   :init (setq markdown-command "multimarkdown"))
 
+(use-package haskell-mode
+  :ensure t)
+
+(use-package lsp-haskell
+  :ensure t)
+
+(add-hook 'haskell-mode-hook #'lsp)
+(add-hook 'haskell-literate-mode-hook #'lsp)
+
+(use-package nixos-options
+  :ensure t)
+
+(use-package company-nixos-options
+  :ensure t)
+
+(use-package nix-mode
+  :ensure t)
+
+(use-package simple-httpd
+  :ensure t)
+
+(add-hook 'html-mode 'lsp)
+(use-package impatient-mode
+  :ensure t)
+
                                         ; --- bechmark ---
+
 (use-package esup
   :ensure t
   :commands esup)
+
+                                        ; --- edit as sudo ---
+(use-package sudo-edit
+  :ensure t)
+
+                                        ; --- magit ---
+(use-package magit
+  :ensure t)
 
 (provide 'packages)
 ;;; packages.el ends here

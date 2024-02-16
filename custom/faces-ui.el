@@ -13,16 +13,23 @@
 		    :weight 'medium )
 
 (set-face-attribute 'variable-pitch nil
-		    :font "Iosevka 11"
-		    :weight 'medium )
+		    :font "Iosevka Nerd Font 12"
+		    :weight 'normal )
+
+(use-package mixed-pitch
+  :ensure t
+  :config
+  (add-hook 'text-mode-hook #'mixed-pitch-mode)
+  (set-face-attribute 'variable-pitch nil
+                      :font "Iosevka Nerd Font 12"
+                      :weight 'normal )
+  )
+
+(add-hook 'text-mode-hook (lambda () (company-mode -1)))
 
 ;; for emacs client
 (add-to-list 'default-frame-alist
 	     '(font . "Fira Code 11"))
-
-(add-hook 'text-mode-hook
-          (lambda ()
-            (variable-pitch-mode 1)))
 
 (setq doom-modeline-height 1) ; optional
 (custom-set-faces
@@ -86,6 +93,8 @@
 (global-display-line-numbers-mode 1)
 (setq display-line-numbers-type 'relative)
 (global-visual-line-mode t)
+(add-hook 'term-mode-hook
+          (lambda () (display-line-numbers-mode -1)))
 
 ;; changing frame title
 (setq frame-title-format

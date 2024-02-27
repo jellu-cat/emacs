@@ -23,60 +23,60 @@
 (require 'use-package)
 
                                         ; --- Key-related ---
- (use-package meow
- :ensure t)
+(use-package evil
+ :ensure t
+ :init
+ (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+ (setq evil-want-keybinding nil)
+ :config
+ (evil-mode 1))
+ (evil-set-initial-state 'char-mode 'insert)
+ (evil-set-initial-state 'term-mode 'insert)
+ 
+(use-package evil-collection
+ :after evil
+ :ensure t
+ :config
+ (evil-collection-init))
+ 
+(use-package god-mode
+ :ensure t
+ :config
+ (setq god-exempt-major-modes nil)
+ (setq god-exempt-predicates nil))
+ 
+(use-package which-key
+  :ensure t
+  :config (which-key-enable-god-mode-support))
+(which-key-mode)
 
- (use-package evil
-   :ensure t  ;; install if it's not installed
-   :init      ;; configure evil before loading it
-   (setq evil-want-integration t)
-   ;; (setq evil-want-keybindig nil)
-   :hook (char-mode . (lambda () evil-mode -1))
-   :config
-   (evil-mode 1)
-   (evil-set-initial-state 'char-mode 'emacs)
-   (evil-set-initial-state 'term-mode 'emacs))
+(use-package evil-org
+  :ensure t
+  :after org
+  :hook (org-mode . (lambda () evil-org-mode))
+  :config
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
 
-;; ;; (use-package evil-collection
-;; ;; :after evil
-;; ;; :ensure t
-;; ;; :config
-;; ;; (evil-collection-init))
-
- (use-package god-mode
-   :ensure t
-   :config
-   (setq god-exempt-major-modes nil)
-   (setq god-exempt-predicates nil))
-
- (use-package which-key
-   :ensure t
-   :config (which-key-enable-god-mode-support))
- (which-key-mode)
-
-;; (use-package evil-org
-;;   :ensure t
-;;   :after org
-;;   :hook (org-mode . (lambda () evil-org-mode))
-;;   :config
-;;   (require 'evil-org-agenda)
-;;   (evil-org-agenda-set-keys))
-
-;; (use-package evil-nerd-commenter
-;;   :ensure t
-;;   :config (evilnc-default-hotkeys)
-;;   :defer t)
+(use-package evil-nerd-commenter
+  :ensure t
+  :config (evilnc-default-hotkeys)
+  :defer t)
 
 (use-package general
   :ensure t
   :config
   (general-evil-setup t))
 
-                                      ; --- Completion ---
+                                        ; --- Completion ---
 (use-package vertico
   :ensure t
   :init
   (vertico-mode))
+
+(use-package marginalia
+  :ensure t
+  :init (marginalia-mode))
 
 (use-package consult
   :ensure t)
@@ -93,6 +93,14 @@
   :ensure t)
 (add-hook 'after-init-hook 'global-company-mode)
 
+;; (use-package company-lsp
+  ;; :ensure t)
+;; (push 'company-lsp company-backends)
+
+                                        ; --- help ---
+(use-package helpful
+  :ensure t)
+
                                         ; --- Save history ---
 (use-package savehist
   :init
@@ -105,25 +113,25 @@
   :ensure t
   :init (save-place-mode 1))
 
+(use-package workgroups2
+  :ensure t)
+
 (setq desktop-path '("~/.config/emacs/custom/desktop/"))
 
-                                       ; --- Aesthetics ---
+                                        ; --- magit ---
+(use-package magit
+  :ensure t)
+
+                                        ; --- Aesthetics ---
 (use-package highlight-indent-guides
   :ensure t
   :init
   (setq highlight-indent-guides-method 'character)
   (add-hook 'prog-mode-hook 'highlight-indent-guides-mode))
 
-(use-package modus-themes
-  :ensure t)
-
 (use-package doom-modeline
   :ensure t)
 (doom-modeline-mode 1)
-
-(use-package solaire-mode
-  :ensure t)
-(solaire-global-mode 1)
 
 (use-package all-the-icons
   :ensure t
@@ -133,11 +141,6 @@
 (use-package ligature
   :ensure t
   :defer t)
-
-(use-package dimmer
-  :ensure t)
-(dimmer-configure-which-key)
-(dimmer-mode t)
 
 (use-package page-break-lines
   :ensure t)
@@ -151,6 +154,28 @@
 ;; :ensure t)
 ;;(global-origami-mode 1)
 
+(use-package pulsar
+  :ensure t
+  :config (pulsar-global-mode 1))
+
+(use-package volatile-highlights
+  :ensure t
+  :config (volatile-highlights-mode 1))
+
+(use-package zoom
+  :ensure t
+  :config (zoom-mode 1))
+
+;; (use-package dimmer
+  ;; :ensure t
+  ;; :config (dimmer-mode t))
+
+(use-package org-present
+  :ensure t)
+
+(use-package visual-fill-column
+  :ensure t)
+
                                         ; --- Snippets ---
 (use-package yasnippet
   :ensure t
@@ -161,27 +186,39 @@
   :defer t)
 
                                         ; --- LSP & Tree-sitter ---
-(use-package tree-sitter
-  :ensure t
-  :hook prog-mode)
-;;(tree-sitter-hl-mode 1)
 
-;; (use-package tree-sitter-langs
-;;   :ensure t
-;;   :hook prog-mode)
+(use-package tree-sitter
+  :ensure t)
+
+(global-tree-sitter-mode)
+(add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
+
+(use-package tree-sitter-langs
+  :ensure t)
 
 (use-package flycheck
-  :ensure t
-  :hook prog-mode)
+  :ensure t)
+(add-hook 'prog-mode-hook 'flycheck-mode)
 
 (use-package lsp-mode
   :ensure t
   :hook (
          (prog-mode . lsp-deferred)
-         (lsp-mode . lsp-enable-which-key-integration)))
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp)
+(setq lsp-warn-no-matched-clients nil)
 
 (use-package lsp-ui
- :ensure t)
+  :ensure t
+  ;; :commands lsp-ui-mode
+  :config
+  (setq lsp-ui-doc-enable nil)
+  (setq lsp-ui-doc-header t)
+  (setq lsp-ui-doc-include-signature t)
+  (setq lsp-ui-doc-border (face-foreground 'default))
+  (setq lsp-ui-sideline-show-code-actions t)
+  (setq lsp-ui-sideline-delay 0.05)
+  )
 
 (use-package lsp-treemacs
   :ensure t
@@ -200,62 +237,77 @@
   (yas-global-mode))
 
                                         ; --- Literate proggraming ---
-; (use-package literate-calc-mode
-  ; :ensure t)
+
+;; (use-package literate-calc-mode
+;; :ensure t)
 
 (use-package ein
   :ensure t)
 
                                         ; --- Format ---
-(use-package aggressive-indent
-  :ensure t)
+
+;;(use-package aggressive-indent
+;; :ensure t)
 ;; (global-aggressive-indent-mode 1)
 ;; (add-to-list 'aggressive-indent-excluded-modes 'html-mode)
 
 (use-package format-all
   :ensure t)
-
 (add-hook 'prog-mode-hook 'format-all-mode)
-(add-hook 'after-init-hook 'electric-pair-mode)
+
+(use-package electric-operator
+  :ensure t)
+(add-hook 'prog-mode #'electric-operator-mode)
+(add-hook 'text-mode #'electric-operator-mode)
+
+;; (use-package smartparens
+;; :ensure t)
+;; (add-hook 'prog-mode-hook #'smartparens-mode)
+;; (add-hook 'text-mode-hook #'smartparens-mode)
 
                                         ; --- Proyect management ---
 (use-package projectile
-  :ensure t
-  :hook prog-mode)
+  :ensure t)
+(add-hook 'prog-mode-hook 'projectile-mode)
 
-                                       ; --- Org Mode ---
+                                        ; --- Org Mode ---
 (use-package org-superstar
   :ensure t
-  :hook org-mode
   :config
   (setq org-superstar-special-todo-items t))
-
-(use-package mixed-pitch
-  :ensure t
-  :hook text-mode)
+(add-hook 'org-mode-hook 'org-superstar-mode)
 (add-hook 'text-mode-hook (lambda () (company-mode -1)))
-
 
 (use-package org-appear
   :hook org-mode)
+(add-hook 'org-mode-hook 'org-appear-mode)
 
 (use-package org-modern
+  :ensure t)
+(add-hook 'org-mode-hook 'org-modern-mode)
+
+                                        ; --- Major modes ---
+(use-package lua-mode
+  :ensure t)
+
+(use-package nix-mode
+  :ensure t)
+
+(use-package lsp-pyright
   :ensure t
-  :hook org-mode)
-
-                                        ; ; --- Major modes ---
-; (use-package lua-mode
-  ; :ensure t)
-
-;; (use-package markdown-mode
-;;   :ensure t
-;;   :mode ("README\\.md\\" . gfm-mode)
-;;   :init (setq markdown-command "multimarkdown"))
+  :hook (python-mode . (lambda () (require 'lsp-pyright)
+                         (lsp)))
+  :init (when (executable-find "python3")
+          (setq lsp-pyright-python-executable-cmd "python3")))
 
                                         ; --- bechmark ---
 (use-package esup
   :ensure t
   :commands esup)
+
+                                        ; --- edit as sudo ---
+(use-package sudo-edit
+  :ensure t)
 
 (provide 'packages)
 ;;; packages.el ends here

@@ -5,33 +5,36 @@
 
                                         ; Fonts ------------------
 (set-face-attribute 'default nil
-		    :font "Fira Code 11"
+		    :font "FiraCode Nerd Font 11"
 		    :weight 'medium )
 
 (set-face-attribute 'fixed-pitch nil
-		    :font "Fira Code 11"
+		    :font "FiraCode Nerd Font 11"
 		    :weight 'medium )
 
 (set-face-attribute 'variable-pitch nil
-		    :font "Iosevka Etoile 11"
+		    :font "Iosevka Nerd Font"
 		    :weight 'medium )
 
 ;; for emacs client
 (add-to-list 'default-frame-alist
-	     '(font . "Fira Code 11"))
+	     '(font . "FiraCode Nerd Font 11"))
 
-(add-hook 'text-mode-hook
-          (lambda ()
-            (variable-pitch-mode 1)))
+(use-package mixed-pitch
+  :ensure t
+  :config
+  (set-face-attribute 'variable-pitch nil
+		    :font "Iosevka Nerd Font" :weight 'medium ))
+(add-hook 'text-mode-hook (lambda () (mixed-pitch-mode)))
 
 (setq doom-modeline-height 1) ; optional
 (custom-set-faces
  '(mode-line
-   ((t (:family "Fira Code 11" :height 0.9))))
+   ((t (:family "FiraCode Nerd Font 11" :height 0.9))))
  '(mode-line-active
-   ((t (:family "Fira code 11" :height 0.9)))) ; For 29+
+   ((t (:family "FiraCode Nerd Font 11" :height 0.9)))) ; For 29+
  '(mode-line-inactive
-   ((t (:family "Fira code 11" :height 0.9)))))
+   ((t (:family "FiraCode Nerd Font 11" :height 0.9)))))
 
                                         ; Ligatures ---------------
 (use-package ligature
@@ -83,8 +86,11 @@
 
 (setq visible-bell t)
 
-(global-display-line-numbers-mode 1)
-(setq display-line-numbers-type 'relative)
+(defun my-display-numbers-hook ()
+  (display-line-numbers-mode 1)
+  (setq display-line-numbers-type 'relative))
+(add-hook 'prog-mode-hook 'my-display-numbers-hook)
+
 (global-visual-line-mode t)
 
 ;; changing frame title

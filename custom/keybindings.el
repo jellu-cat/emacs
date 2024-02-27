@@ -72,6 +72,7 @@
                                         ; --- C-x ---
 (general-define-key :keymaps 'ctl-x-map
                    "C-r" 'consult-recent-file
+                   "C-l" 'pulsar-pulse-line
                     )
 
 ;; (meow-leader-define-key
@@ -93,6 +94,15 @@
 (general-define-key
  :keymaps 'emacs-lisp-mode-map
                     "C-c C-c" 'eval-buffer)
+
+                                        ; --- helpful ---
+
+(global-set-key (kbd "C-h f") #'helpful-callable)
+(global-set-key (kbd "C-h v") #'helpful-variable)
+(global-set-key (kbd "C-h k") #'helpful-key)
+(global-set-key (kbd "C-h x") #'helpful-command)
+(global-set-key (kbd "C-c C-d") #'helpful-at-point)
+(global-set-key (kbd "C-h F") #'helpful-function)
 
 (provide 'keybindings)
 ;;; keybindings.el ends here

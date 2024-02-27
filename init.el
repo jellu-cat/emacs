@@ -6,7 +6,6 @@
 (add-to-list 'load-path "~/.config/emacs/evil-god-state")
  
 (require 'packages)
-(require 'meow-config)
 (require 'evil-god-state)
 (require 'keybindings)
 (require 'faces-ui)
@@ -14,7 +13,7 @@
 (require 'colorscheme)
 (require 'languajes-configs)
 (require 'org-config)
-(require 'functions)
+;;(require 'functions)
 (server-start)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -22,7 +21,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(lsp-ui meow eldoc-box consult yasnippet-snippets which-key vertico use-package tree-sitter-langs solaire-mode projectile poet-theme page-break-lines origami org-superstar org-modern org-bullets orderless modus-themes mixed-pitch lua-mode literate-calc-mode ligature jupyter highlight-indent-guides god-mode general format-all flycheck evil-org evil-nerd-commenter esup ein doom-modeline dimmer dashboard dap-mode company all-the-icons aggressive-indent))
+   '(visual-fill-column org-present company-lsp magit evil-collection smartparens smartparens-mode electric-operator marginalia zoom volatile-highlights pulsar ace-popup-menu workgroups2 helpful sudo-edit sudo nix-mode lsp-ui meow eldoc-box consult yasnippet-snippets which-key vertico use-package tree-sitter-langs solaire-mode projectile poet-theme page-break-lines origami org-superstar org-modern org-bullets orderless modus-themes mixed-pitch lua-mode literate-calc-mode ligature jupyter highlight-indent-guides god-mode general format-all flycheck evil-org evil-nerd-commenter esup ein doom-modeline dimmer dashboard dap-mode company all-the-icons aggressive-indent))
  '(warning-suppress-log-types '((comp) (auto-save) (lsp-mode)))
  '(warning-suppress-types '((auto-save) (lsp-mode))))
 (custom-set-faces
@@ -30,6 +29,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(mode-line ((t (:family "FiraCode Nerd Font 11" :height 0.9))))
+ '(mode-line-active ((t (:family "FiraCode Nerd Font 11" :height 0.9))))
+ '(mode-line-inactive ((t (:family "FiraCode Nerd Font 11" :height 0.9))))
  '(org-block ((t (:inherit fixed-pitch))))
  '(org-code ((t (:inherit (shadow fixed-pitch)))))
  '(org-document-info ((t (:foreground "dark orange"))))

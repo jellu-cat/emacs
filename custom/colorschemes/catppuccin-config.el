@@ -17,8 +17,14 @@
 
 (catppuccin-set-color 'lavender "#5b6cca" 'latte)
 
-(setq catppuccin-flavor 'latte)
-(catppuccin-reload)
+(add-hook 'after-make-frame-functions
+  (lambda ()
+    ;; we want some font only in GUI Emacs
+    (when (display-graphics-p)
+      (setq catppuccin-flavor 'latte)
+      (catppuccin-reload)
+      )
+    )
 
 (provide 'catpuccin-config)
 ;;; catppuccin-config.el ends here.

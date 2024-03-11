@@ -32,7 +32,7 @@
  '(mode-line
    ((t (:family "FiraCode Nerd Font 11" :height 0.9))))
  '(mode-line-active
-   ((t (:family "FiraCode Nerd Font 11" :height 0.9)))) ; For 29+
+   ((t (:family "FiraCode Nerd Font 11" :height 0.9))))
  '(mode-line-inactive
    ((t (:family "FiraCode Nerd Font 11" :height 0.9)))))
 
@@ -73,12 +73,14 @@
   (global-ligature-mode t))
 
                                         ; UI ---------------------
+(setq backup-directory-alist `(("." . "~/.saves")))
 (setq inhibit-startup-message t)
 (tool-bar-mode -1)
 (tooltip-mode -1)
 (set-fringe-mode 10)
 (scroll-bar-mode -1)
-;;(menu-bar-mode -1)
+(menu-bar-mode -1)
+(setq use-dialog-box nil)
 
 (setq scroll-margin 0
       scroll-conservatively 100000

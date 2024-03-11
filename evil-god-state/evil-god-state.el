@@ -48,8 +48,8 @@
 
 
 ;;; Code:
-(require 'evil)
-(require 'god-mode)
+;;(require 'evil)
+;;(require 'god-mode)
 
 (evil-define-state god
   "God state."

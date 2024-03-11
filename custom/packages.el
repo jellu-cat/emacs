@@ -4,54 +4,61 @@
 ;;; Code:
 
                                         ; --- Initialiazation ---
-(require 'package)
-(setq package-archives '(
-                         ("melpa" . "https://melpa.org/packages/")
-                         ("melpa-stable" . "https://stable.melpa.org/packages/")
-                         ("org" . "https://orgmode.org/elpa/")
-                         ("nongnu" . "https://elpa.nongnu.org/nongnu/")
-                         ("elpa" . "https://elpa.gnu.org/packages/")))
-
-(package-initialize)
-
-(unless package-archive-contents
-  (package-refresh-contents))
-
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
+;; (require 'package)
+;; (setq package-archives '(
+                         ;; ("melpa" . "https://melpa.org/packages/")
+                         ;; ("melpa-stable" . "https://stable.melpa.org/packages/")
+                         ;; ("org" . "https://orgmode.org/elpa/")
+                         ;; ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+                         ;; ("elpa" . "https://elpa.gnu.org/packages/")))
+;; 
+;; (package-initialize)
+;; 
+;; (unless package-archive-contents
+  ;; (package-refresh-contents))
+;; 
+;; (unless (package-installed-p 'use-package)
+  ;; (package-install 'use-package))
 
 (require 'use-package)
+(require 'elpaca)
 
+(elpaca elpaca-use-package
+  ;; Enable :elpaca use-package keyword.
+  (elpaca-use-package-mode)
+  ;; Assume :elpaca t unless otherwise specified.
+  (setq elpaca-use-package-by-default t))
+(elpaca-wait)
                                         ; --- Key-related ---
 (use-package evil
- :ensure t
- :init
- (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
- (setq evil-want-keybinding nil)
- :config
- (evil-mode 1))
- (evil-set-initial-state 'char-mode 'insert)
- (evil-set-initial-state 'term-mode 'insert)
- 
+  :demand t
+  :init
+  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+  (setq evil-want-keybinding nil)
+  :config
+  (evil-mode 1)
+  (evil-set-initial-state 'char-mode 'insert)
+  (evil-set-initial-state 'term-mode 'insert))
+
 (use-package evil-collection
- :after evil
- :ensure t
- :config
- (evil-collection-init))
- 
+  :ensure (:source "MELPA")
+  :after evil
+  :config
+  (evil-collection-init))
+
 (use-package god-mode
- :ensure t
- :config
- (setq god-exempt-major-modes nil)
- (setq god-exempt-predicates nil))
- 
+  :ensure (:source "MELPA")
+  :config
+  (setq god-exempt-major-modes nil)
+  (setq god-exempt-predicates nil))
+
 (use-package which-key
-  :ensure t
-  :config (which-key-enable-god-mode-support))
-(which-key-mode)
+  :ensure (:source "MELPA")
+  :config (which-key-enable-god-mode-support)
+  (which-key-mode))
 
 (use-package evil-org
-  :ensure t
+  :ensure (:source "MELPA")
   :after org
   :hook (org-mode . (lambda () evil-org-mode))
   :config
@@ -64,9 +71,12 @@
   :defer t)
 
 (use-package general
-  :ensure t
+  :ensure (:source "MELPA")
   :config
   (general-evil-setup t))
+
+(use-package keycast
+  :ensure t)
 
                                         ; --- Completion ---
 (use-package vertico
@@ -99,22 +109,23 @@
 
                                         ; --- help ---
 (use-package helpful
-  :ensure t)
+  :ensure (:source "MELPA"))
 
                                         ; --- Save history ---
-(use-package savehist
-  :init
-  (savehist-mode))
+;; (use-package savehist
+  ;; :ensure t
+  ;; :init
+  ;; (savehist-mode))
 
 (use-package harpoon
   :ensure t)
 
-(use-package saveplace
-  :ensure t
-  :init (save-place-mode 1))
+;; (use-package saveplace
+  ;; :ensure t
+  ;; :init (save-place-mode 1))
 
 (use-package workgroups2
-  :ensure t)
+  :ensure (:source "MELPA"))
 
 (setq desktop-path '("~/.config/emacs/custom/desktop/"))
 
@@ -122,16 +133,19 @@
 (use-package magit
   :ensure t)
 
+(use-package transient
+  :ensure (:source "MELPA"))
+
                                         ; --- Aesthetics ---
 (use-package highlight-indent-guides
-  :ensure t
+  :ensure (:source "MELPA")
   :init
   (setq highlight-indent-guides-method 'character)
   (add-hook 'prog-mode-hook 'highlight-indent-guides-mode))
 
-(use-package doom-modeline
-  :ensure t)
-(doom-modeline-mode 1)
+;; (use-package doom-modeline
+  ;; :ensure (:source "MELPA")
+  ;; (doom-modeline-mode 1))
 
 (use-package all-the-icons
   :ensure t
@@ -142,17 +156,10 @@
   :ensure t
   :defer t)
 
-(use-package page-break-lines
-  :ensure t)
-
 (use-package dashboard
   :ensure t
   :config
   (dashboard-setup-startup-hook))
-
-;;(use-package origami
-;; :ensure t)
-;;(global-origami-mode 1)
 
 (use-package pulsar
   :ensure t
@@ -162,19 +169,29 @@
   :ensure t
   :config (volatile-highlights-mode 1))
 
-(use-package zoom
-  :ensure t
-  :config (zoom-mode 1))
-
-;; (use-package dimmer
+;; (use-package zoom
   ;; :ensure t
-  ;; :config (dimmer-mode t))
+  ;; :config (zoom-mode 1))
 
 (use-package org-present
   :ensure t)
 
 (use-package visual-fill-column
   :ensure t)
+
+(use-package centered-cursor-mode
+  :demand
+  :ensure t
+  :config (global-centered-cursor-mode))
+
+(use-package dimmer
+  :config (dimmer-mode t))
+
+;;(use-package origami
+;; :ensure t)
+;;(global-origami-mode 1)
+
+; (elpaca (disable-mouse))
 
                                         ; --- Snippets ---
 (use-package yasnippet
@@ -188,25 +205,25 @@
                                         ; --- LSP & Tree-sitter ---
 
 (use-package tree-sitter
-  :ensure t)
-
-(global-tree-sitter-mode)
-(add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
-
-(use-package tree-sitter-langs
-  :ensure t)
-
+  :ensure t
+  :config
+  (global-tree-sitter-mode)
+  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+ 
+ ;; (use-package tree-sitter-langs
+   ;; :ensure t)
+ 
 (use-package flycheck
+  :hook (prog-mode . flycheck-mode)
   :ensure t)
-(add-hook 'prog-mode-hook 'flycheck-mode)
+
+;; (use-package eglot
+  ;; :ensure t)
 
 (use-package lsp-mode
   :ensure t
-  :hook (
-         (prog-mode . lsp-deferred)
-         (lsp-mode . lsp-enable-which-key-integration))
+  :hook ((lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
-(setq lsp-warn-no-matched-clients nil)
 
 (use-package lsp-ui
   :ensure t
@@ -241,24 +258,24 @@
 ;; (use-package literate-calc-mode
 ;; :ensure t)
 
-(use-package ein
-  :ensure t)
+;; (use-package ein
+;;   :ensure t)
 
                                         ; --- Format ---
-
+;; 
 ;;(use-package aggressive-indent
 ;; :ensure t)
 ;; (global-aggressive-indent-mode 1)
 ;; (add-to-list 'aggressive-indent-excluded-modes 'html-mode)
 
 (use-package format-all
-  :ensure t)
-(add-hook 'prog-mode-hook 'format-all-mode)
+  :ensure t
+  :hook (prog-mode . format-all-mode))
 
 (use-package electric-operator
-  :ensure t)
-(add-hook 'prog-mode #'electric-operator-mode)
-(add-hook 'text-mode #'electric-operator-mode)
+  :ensure t
+  :hook ((prog-mode . electric-operator-mode)
+         (text-mode . electric-operator-mode)))
 
 ;; (use-package smartparens
 ;; :ensure t)
@@ -269,36 +286,32 @@
 (use-package projectile
   :ensure t)
 (add-hook 'prog-mode-hook 'projectile-mode)
-
-                                        ; --- Org Mode ---
+;; 
+                                        ;; ; --- Org Mode ---
 (use-package org-superstar
   :ensure t
   :config
-  (setq org-superstar-special-todo-items t))
-(add-hook 'org-mode-hook 'org-superstar-mode)
+  (setq org-superstar-special-todo-items t)
+  :hook (org-mode . org-superstar))
 (add-hook 'text-mode-hook (lambda () (company-mode -1)))
 
 (use-package org-appear
   :hook org-mode)
-(add-hook 'org-mode-hook 'org-appear-mode)
 
 (use-package org-modern
-  :ensure t)
-(add-hook 'org-mode-hook 'org-modern-mode)
-
-                                        ; --- Major modes ---
-(use-package lua-mode
-  :ensure t)
-
-(use-package nix-mode
-  :ensure t)
-
-(use-package lsp-pyright
   :ensure t
-  :hook (python-mode . (lambda () (require 'lsp-pyright)
-                         (lsp)))
-  :init (when (executable-find "python3")
-          (setq lsp-pyright-python-executable-cmd "python3")))
+  :hook org-mode)
+
+                                        ; --- Web ---
+
+(use-package simple-httpd
+  :ensure t)
+
+(use-package impatient-mode
+  :ensure t)
+
+(use-package web-mode
+  :ensure t)
 
                                         ; --- bechmark ---
 (use-package esup
@@ -308,6 +321,7 @@
                                         ; --- edit as sudo ---
 (use-package sudo-edit
   :ensure t)
+(elpaca-wait)
 
 (provide 'packages)
 ;;; packages.el ends here

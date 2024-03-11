@@ -15,7 +15,12 @@
  "C-z" 'evil-normal-state
  "C-e" 'execute-extended-command)
 
-(global-unset-key (kbd "C-SPC"))
+(global-unset-key
+ (kbd "C-SPC"))
+(global-unset-key
+ (kbd "<next>"))
+(global-unset-key
+ (kbd "<prior>"))
 
 (defvar jellu-mode-map (make-keymap) "Jellu minor mode keymap.")
 (define-minor-mode jellu-mode
@@ -46,6 +51,7 @@
                       "C-m" 'delete-other-windows
                       "C-q" 'delete-window
                       )
+
 (global-set-key (kbd "C-w") window-cmd)
 (general-define-key :keymaps 'jellu-mode-map
                    "C-w" 'window-cmd
@@ -82,6 +88,11 @@
                                         ; --- god-mode ---
 (evil-define-key
   'normal global-map " " 'evil-execute-in-god-state)
+
+(add-hook 'minibuffer-exit-hook (lambda ()
+                                  (god-mode -1)
+                                  (evil-normal-state)
+                                  (message "(!!)")))
 
                                         ; --- commenter ---
 (nvmap :prefix "g"

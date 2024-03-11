@@ -5,6 +5,7 @@
 (add-to-list 'load-path "~/.config/emacs/custom/")
 (add-to-list 'load-path "~/.config/emacs/evil-god-state")
  
+(require 'elpaca-init)
 (require 'packages)
 (require 'evil-god-state)
 (require 'keybindings)
@@ -14,16 +15,16 @@
 (require 'languajes-configs)
 (require 'org-config)
 ;;(require 'functions)
-(server-start)
+;;(server-start)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(visual-fill-column org-present company-lsp magit evil-collection smartparens smartparens-mode electric-operator marginalia zoom volatile-highlights pulsar ace-popup-menu workgroups2 helpful sudo-edit sudo nix-mode lsp-ui meow eldoc-box consult yasnippet-snippets which-key vertico use-package tree-sitter-langs solaire-mode projectile poet-theme page-break-lines origami org-superstar org-modern org-bullets orderless modus-themes mixed-pitch lua-mode literate-calc-mode ligature jupyter highlight-indent-guides god-mode general format-all flycheck evil-org evil-nerd-commenter esup ein doom-modeline dimmer dashboard dap-mode company all-the-icons aggressive-indent))
+   '(typst-mode eglot web-mode impatient-mode simple-httpd haskell-mode visual-fill-column org-present company-lsp magit evil-collection smartparens smartparens-mode electric-operator marginalia zoom volatile-highlights pulsar ace-popup-menu workgroups2 helpful sudo-edit sudo nix-mode lsp-ui meow eldoc-box consult yasnippet-snippets which-key vertico use-package tree-sitter-langs solaire-mode projectile poet-theme page-break-lines origami org-superstar org-modern org-bullets orderless modus-themes mixed-pitch lua-mode literate-calc-mode ligature jupyter highlight-indent-guides god-mode general format-all flycheck evil-org evil-nerd-commenter esup ein doom-modeline dimmer dashboard dap-mode company all-the-icons aggressive-indent))
  '(warning-suppress-log-types '((comp) (auto-save) (lsp-mode)))
- '(warning-suppress-types '((auto-save) (lsp-mode))))
+ '(warning-suppress-types '((emacs) (emacs) (emacs) (auto-save) (lsp-mode))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

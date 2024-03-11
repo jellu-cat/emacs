@@ -16,15 +16,19 @@
 (catppuccin-set-color 'overlay0 "#acb0be" 'latte)
 
 (catppuccin-set-color 'lavender "#5b6cca" 'latte)
+(with-output-to-string (display-graphic-p))
+(message "uwu")
 
 (add-hook 'after-make-frame-functions
-  (lambda ()
-    ;; we want some font only in GUI Emacs
-    (when (display-graphics-p)
-      (setq catppuccin-flavor 'latte)
-      (catppuccin-reload)
-      )
-    )
+          (lambda ()
+            (while (display-graphic-p)
+              (message "uwu")
+              ;;(setq catppuccin-flavor 'latte)
+              ;;(catppuccin-reload)
+              (message "owo")
+              )
+            )
+)
 
-(provide 'catpuccin-config)
+(provide 'catppuccin-config)
 ;;; catppuccin-config.el ends here.

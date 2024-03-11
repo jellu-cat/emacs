@@ -1,1 +1,1 @@
-("~/repos/emacs/" "~/repos/dotfiles/" "~/repos/scripts/")
+("~/repos/emacs/" "~/repos/scripts/" "~/itq/sexto/graf/rpg-kit/" "~/repos/dotfiles/")

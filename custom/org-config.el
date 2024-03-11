@@ -3,8 +3,6 @@
 ;;; Code:
                                         ; --- Aesthetics ---
 
-(setq org-hide-emphasis-markers t)
-
 (font-lock-add-keywords 'org-mode
                         '(("^ *\\([-]\\) "
                            (0 (prog1 ()
@@ -83,10 +81,14 @@
                                      (org-verbatim (:height 1.55) org-verbatim)
                                      (org-block (:height 1.25) org-block)
                                      (org-block-begin-line (:height 0.7) org-block)))
-  (visual-fill-column-mode 1))
+
+  (org-display-inline-images t)
+  (visual-fill-column-mode 1)
+  (global-centered-cursor-mode -1))
 
 (defun my/org-present-end ()
   (visual-fill-column-mode 0)
+  (global-centered-cursor-mode 1)
   (setq-local face-remapping-alist '((default variable-pitch default))))
 
 ;; Register hooks with org-present
@@ -100,40 +102,17 @@
 (unless (boundp 'org-latex-classes)
   (setq org-latex-classes nil))
 
-(add-to-list 'org-latex-classes
-             '("article"
-              "\\documentclass[letterpaper,12pt]{article}
-               \\usepackage[utf8]{inputenc}
-               \\usepackage[shortlabels]{enumitem}
-               \\usepackage[spanish,mexico]{babel} 
-               \\usepackage{amsmath,amssymb,amsfonts,latexsym,cancel}
-               \\usepackage{hyperref}
-               \\usepackage{wrapfig}
-               \\usepackage[pdftex]{graphicx}
-               \\usepackage{fancyhdr}
-               \\usepackage{float}
-               \\usepackage{longtable,multirow,booktabs}
-               \\usepackage{multicol}
-               \\usepackage{caption}
-               \\usepackage[]{sidecap}
-               \\usepackage{adjustbox}
-               \\usepackage{parskip}
-               \\usepackage{enumitem}
-               \\usepackage{tikz}
-               \\usepackage{lipsum}
-               \\usepackage[]{xcolor}
-               \\usepackage{cite}
-               \\usepackage[square,numbers]{natbib}
-               \\usepackage{import}
-               \\textheight       = 21cm
-               \\textwidth        = 18cm
-               \\topmargin        = -2cm
-               \\oddsidemargin    = -0.8cm
-               \\pagestyle{fancy}"))
-                
-
 ;; latex previews
 (plist-put org-format-latex-options :scale 2)
+
+(general-define-key  :keymap 'org-present-mode-keymap
+                    "<next>" 'org-present-next
+                    "<prior>" 'org-present-prev)
+
+(add-hook 'org-present-mode-hook
+    (lambda ()
+      (define-key org-present-mode-keymap
+                  (kbd "<next>") 'org-present-next)))
 
 (provide 'org-config)
 ;;; org-config.el ends here

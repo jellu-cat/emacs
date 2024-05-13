@@ -1,5 +1,8 @@
 (provide 'editing)
 
+(setq explicit-shell-file-name "/run/current-system/sw/bin/bash")
+(setq exec-path (append exec-path '("~/.local/bin")))
+
 ;; rings
 
 (setq global-mark-ring-max 5000

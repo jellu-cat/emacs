@@ -1,1 +1,1 @@
-("~/repos/emacs/" "~/repos/meow/" "~/repos/dotfiles/" "~/itq/cuarto/automatas/proyecto-LyAI/" "~/repos/tabbed/" "~/repos/ed-2022/" "~/repos/scripts/")
+("~/repos/emacs/" "~/repos/scripts/" "~/itq/sexto/graf/rpg-kit/" "~/repos/dotfiles/")

@@ -2,6 +2,20 @@
 
 ;;; Commentary:
 
+;;; Code:
+
+(defun terminal-lauch ()
+  "Open a terminal in the current working directory."
+  (interactive)
+  (let
+      ((terminal-command
+        "wezterm start --class wezterm-emacs --cwd "))
+
+    (shell-command (concat terminal-command
+                           default-directory " &"))
+  )
+)
+
 ;; prevent esc from deleting windows
 (defadvice keyboard-escape-quit
   (around keyboard-escape-quit-dont-close-windows activate)
@@ -13,9 +27,15 @@
  "C-+" 'text-scale-increase
  "C--" 'text-scale-decrease
  "C-z" 'evil-normal-state
- "C-e" 'execute-extended-command)
+ "C-e" 'execute-extended-command
+ "C-t" 'terminal-lauch)
 
-(global-unset-key (kbd "C-SPC"))
+(global-unset-key
+ (kbd "C-SPC"))
+(global-unset-key
+ (kbd "<next>"))
+(global-unset-key
+ (kbd "<prior>"))
 
 (defvar jellu-mode-map (make-keymap) "Jellu minor mode keymap.")
 (define-minor-mode jellu-mode
@@ -46,6 +66,7 @@
                       "C-m" 'delete-other-windows
                       "C-q" 'delete-window
                       )
+
 (global-set-key (kbd "C-w") window-cmd)
 (general-define-key :keymaps 'jellu-mode-map
                    "C-w" 'window-cmd
@@ -72,6 +93,7 @@
                                         ; --- C-x ---
 (general-define-key :keymaps 'ctl-x-map
                    "C-r" 'consult-recent-file
+                   "C-l" 'pulsar-pulse-line
                     )
 
 ;; (meow-leader-define-key
@@ -79,8 +101,25 @@
 ;;  '("b" . buffer-cmd))
 
                                         ; --- god-mode ---
-(evil-define-key
-  'normal global-map " " 'evil-execute-in-god-state)
+
+(general-define-key
+ :states 'god
+ "j" 'evil-normal-state
+ "k" 'evil-normal-state
+ "l" 'evil-normal-state
+ "u" 'evil-normal-state
+ )
+
+(general-define-key
+ :states 'normal
+ "SPC" 'evil-execute-in-god-state)
+
+;; (add-hook 'evil-god-state-exit-hook
+;;           (lambda ()
+;;             (if (eq evil-state 'god)
+;;                 (progn
+;;                   (message "gatito")
+;;                   (evil-normal-state)))))
 
                                         ; --- commenter ---
 (nvmap :prefix "g"
@@ -92,7 +131,17 @@
                                         ; --- elisp-mode ---
 (general-define-key
  :keymaps 'emacs-lisp-mode-map
-                    "C-c C-c" 'eval-buffer)
+ "C-c C-c" 'eval-buffer)
+
+                                        ; --- helpful ---
+
+(global-set-key (kbd "C-h f") #'helpful-callable)
+(global-set-key (kbd "C-h v") #'helpful-variable)
+(global-set-key (kbd "C-h k") #'helpful-key)
+(global-set-key (kbd "C-h x") #'helpful-command)
+(global-set-key (kbd "C-c C-d") #'helpful-at-point)
+(global-set-key (kbd "C-h F") #'helpful-function)
+
 
 (provide 'keybindings)
 ;;; keybindings.el ends here

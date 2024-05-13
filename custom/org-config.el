@@ -1,15 +1,13 @@
 ;;; package: Org
 
 ;;; Code:
-                                      ; --- Aesthetics ---
-
-(setq org-hide-emphasis-markers t)
+                                        ; --- Aesthetics ---
 
 (font-lock-add-keywords 'org-mode
                         '(("^ *\\([-]\\) "
-                          (0 (prog1 ()
-                               (compose-region (match-beginning 1)
-                                               (match-end 1) "•"))))))
+                           (0 (prog1 ()
+                                (compose-region (match-beginning 1)
+                                                (match-end 1) "•"))))))
 
 (add-hook 'org-mode-hook (lambda ()
                            (visual-line-mode 1)
@@ -63,13 +61,58 @@
 
                                         ; --- Tweaks ---
 (setq org-startup-indented t
-          org-pretty-entities t
-          org-hide-emphasis-markers t
-          org-startup-with-inline-images t
-          org-image-actual-width '(300))
+      org-pretty-entities t
+      org-hide-emphasis-markers t
+      org-startup-with-inline-images t
+      org-image-actual-width '(300))
+
+                                        ; --- Presentations ---
+
+(setq-default visual-fill-column-center-text t)
+(setq visual-fill-column-width 110)
+(setq header-line-format " ")
+(setq header-line-format nil)
+
+(defun my/org-present-start ()
+  (setq-local face-remapping-alist '((default (:height 1.5) variable-pitch)
+                                     (header-line (:height 4.0) variable-pitch)
+                                     (org-document-title (:height 1.75) org-document-title)
+                                     (org-code (:height 1.55) org-code)
+                                     (org-verbatim (:height 1.55) org-verbatim)
+                                     (org-block (:height 1.25) org-block)
+                                     (org-block-begin-line (:height 0.7) org-block)))
+
+  (org-display-inline-images t)
+  (visual-fill-column-mode 1)
+  (global-centered-cursor-mode -1))
+
+(defun my/org-present-end ()
+  (visual-fill-column-mode 0)
+  (global-centered-cursor-mode 1)
+  (setq-local face-remapping-alist '((default variable-pitch default))))
+
+;; Register hooks with org-present
+(add-hook 'org-present-mode-hook 'my/org-present-start)
+(add-hook 'org-present-mode-quit-hook 'my/org-present-end)
+
+                                        ; --- Latex ---
+(setq org-latex-pdf-process
+      '("latexmk -pdflatex='pdflatex -interaction nonstopmode' -pdf -bibtex -f %f"))
+
+(unless (boundp 'org-latex-classes)
+  (setq org-latex-classes nil))
 
 ;; latex previews
 (plist-put org-format-latex-options :scale 2)
+
+(general-define-key  :keymap 'org-present-mode-keymap
+                    "<next>" 'org-present-next
+                    "<prior>" 'org-present-prev)
+
+(add-hook 'org-present-mode-hook
+    (lambda ()
+      (define-key org-present-mode-keymap
+                  (kbd "<next>") 'org-present-next)))
 
 (provide 'org-config)
 ;;; org-config.el ends here

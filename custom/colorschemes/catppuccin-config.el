@@ -5,6 +5,8 @@
 
 ;;; Code:
 
+(message "uwu")
+
 (add-to-list 'custom-theme-load-path "~/.config/emacs/themes")
 (load-theme 'catppuccin t)
 
@@ -20,5 +22,12 @@
 (setq catppuccin-flavor 'latte)
 (catppuccin-reload)
 
-(provide 'catpuccin-config)
+;; (if (display-graphic-p)
+    ;; (progn
+      ;; (setq catppuccin-flavor 'latte)
+      ;; (catppuccin-reload)
+      ;; (message "uwu")
+      ;; ))
+
+(provide 'catppuccin-config)
 ;;; catppuccin-config.el ends here.

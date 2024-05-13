@@ -106,16 +106,20 @@
   (add-hook 'post-command-hook #'evil-stop-execute-in-god-state t)
   (setq evil-execute-in-god-state-buffer (current-buffer))
   (setq evil-god-last-command last-command)
-  (cond
-   ((evil-visual-state-p)
-    (let ((mrk (mark))
-          (pnt (point)))
-      (evil-god-state)
-      (set-mark mrk)
-      (goto-char pnt)))
-   (t
-    (evil-god-state)))
-  (evil-echo "Switched to God state for the next command ..."))
+  (unwind-protect
+      (progn
+        (cond
+         ((evil-visual-state-p)
+          (let ((mrk (mark))
+                (pnt (point)))
+            (evil-god-state)
+            (set-mark mrk)
+            (goto-char pnt)))
+         (t
+          (evil-god-state)))
+        (evil-echo "Switched to God state for the next command ..."))
+    (unless (eq this-command 'evil-execute-in-god-state)
+      (evil-normal-state))))
 
 ;;; Unconditionally exit Evil-God state.
 (defun evil-god-state-bail ()

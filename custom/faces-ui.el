@@ -20,13 +20,6 @@
 (add-to-list 'default-frame-alist
 	     '(font . "FiraCode Nerd Font 11"))
 
-(use-package mixed-pitch
-  :ensure t
-  :config
-  (set-face-attribute 'variable-pitch nil
-		    :font "Iosevka Nerd Font" :weight 'medium ))
-(add-hook 'text-mode-hook (lambda () (mixed-pitch-mode)))
-
 (setq doom-modeline-height 1) ; optional
 (custom-set-faces
  '(mode-line
@@ -75,6 +68,10 @@
                                         ; UI ---------------------
 (setq backup-directory-alist `(("." . "~/.saves")))
 (setq inhibit-startup-message t)
+(setq inhibit-splash-screen t)
+(setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
+(switch-to-buffer "*dashboard*")
+
 (tool-bar-mode -1)
 (tooltip-mode -1)
 (set-fringe-mode 10)

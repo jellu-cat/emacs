@@ -11,20 +11,12 @@
 (require 'keybindings)
 (require 'faces-ui)
 (require 'editing)
-(require 'colorscheme)
 (require 'languajes-configs)
+(require 'colorscheme)
 (require 'org-config)
-;;(require 'functions)
-;;(server-start)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(typst-mode eglot web-mode impatient-mode simple-httpd haskell-mode visual-fill-column org-present company-lsp magit evil-collection smartparens smartparens-mode electric-operator marginalia zoom volatile-highlights pulsar ace-popup-menu workgroups2 helpful sudo-edit sudo nix-mode lsp-ui meow eldoc-box consult yasnippet-snippets which-key vertico use-package tree-sitter-langs solaire-mode projectile poet-theme page-break-lines origami org-superstar org-modern org-bullets orderless modus-themes mixed-pitch lua-mode literate-calc-mode ligature jupyter highlight-indent-guides god-mode general format-all flycheck evil-org evil-nerd-commenter esup ein doom-modeline dimmer dashboard dap-mode company all-the-icons aggressive-indent))
- '(warning-suppress-log-types '((comp) (auto-save) (lsp-mode)))
- '(warning-suppress-types '((emacs) (emacs) (emacs) (auto-save) (lsp-mode))))
+;; (require 'functions)
+;; (server-start)
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -46,8 +38,16 @@
  '(org-level-5 ((t (:inherit outline-5 :height 1.1))))
  '(org-link ((t (:foreground "royal blue" :underline t))))
  '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
- '(org-property-value ((t (:inherit fixed-pitch))) t)
+ '(org-property-value ((t (:inherit fixed-pitch))))
  '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
  '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
  '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
  '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("0d9028987183602b113c27e52e549b2eeb23fb29ebfc19ca0b6612fa57472066" "7776ba149258df15039b1f0aba4b180d95069b2589bc7d6570a833f05fdf7b6d" default))
+ '(package-selected-packages '(nix-mode lua-mode haskell-mode)))

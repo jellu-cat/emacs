@@ -3,13 +3,59 @@
 
 ;;; Code:
 
-                                        ; c-like languajes
-(add-hook 'c-mode-hook 'lsp)
-(add-hook 'c++-mode-hook 'lsp)
+                                        ; --- Major modes ---
+(use-package lua-mode
+  :ensure t)
+
+(use-package nix-mode
+  :ensure t)
+
+(use-package haskell-mode
+  :ensure t)
+
+(use-package lsp-haskell
+  :ensure t)
+(add-hook 'haskell-mode-hook #'lsp)
+(add-hook 'haskell-literate-mode-hook #'lsp)
+
+(elpaca (typst-ts-mode
+         :host sourcehut
+         :repo "meow_king/typst-ts-mode"))
+
+(lsp-register-client
+ (make-lsp-client
+  :new-connection
+  (lsp-stdio-connection (list "swipl"
+                              "-g"
+                              "use_module(library(lsp_server))."
+                              "-g" "lsp_server:main"
+                              "-t" "halt"
+                              "--" "stdio"))
+  :major-modes '(prolog-mode)
+  :priority 1
+  :multi-root t
+  :server-id 'prolog-ls))
+
+                                        ;--- Tree-sitter
+
+(setq major-mode-remap-alist '(
+                               (bash-mode . bash-ts-mode)
+                               (typescript-mode . typescript-ts-mode)
+                               (javascript-mode . javascript-ts-mode)
+                               (css-mode . css-ts-mode)
+                               (c-mode . c-ts-mode)
+                               (c++-mode . c++-ts-mode)
+                               (python-mode . python-ts-mode)))
+
+                                        ; --- C-like languages ---
+
+(add-hook 'c-ts-mode-hook 'lsp)
+(add-hook 'c++-ts-mode-hook 'lsp)
 
 (setq-default c-basic-offset 4)
 
-                                        ; general
+                                        ; --- LSP ---
+
 (setq gc-cons-threshold (* 100 1024 1024)
       read-process-output-max (* 1024 1024)
       treemacs-space-between-root-nodes nil
@@ -24,6 +70,7 @@
 
 (setq treesit-language-source-alist
    '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+     (c "https://github.com/uyha/tree-sitter-cmake")
      (cmake "https://github.com/uyha/tree-sitter-cmake")
      (css "https://github.com/tree-sitter/tree-sitter-css")
      (elisp "https://github.com/Wilfred/tree-sitter-elisp")
@@ -41,42 +88,23 @@
      (typst "https://github.com/uben0/tree-sitter-typst"))
    )
 
-;; (treesit-install-language-grammar 'typst)
+;(mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist))
+
 
 (add-hook 'prog-mode-hook
           (lambda ()
-            (unless (derived-mode-p 'javascript-mode)
+            (unless (derived-mode-p 'javascript-ts-mode)
               'lsp-deferred)))
 (setq lsp-warn-no-matched-clients nil)
 
-                                        ; --- Major modes ---
-(use-package lua-mode
-  :ensure t)
+(use-package lsp-pyright
+  :ensure t
+  :hook (python-ts-mode . (lambda () (require 'lsp-pyright)
+                         (lsp)))
+  :init (when (executable-find "python3")
+          (setq lsp-pyright-python-executable-cmd "python3")))
 
-(use-package nix-mode
-  :ensure t)
-
-(use-package haskell-mode
-  :ensure t)
-
-(use-package lsp-haskell
-  :ensure t)
-(add-hook 'haskell-mode-hook #'lsp)
-(add-hook 'haskell-literate-mode-hook #'lsp)
-
-;; (use-package typst-ts-mode
-  ;; :ensure t
-  ;; :elpaca (:type git :host sourcehut :repo "meow_king/typst-ts-mode")
-  ;; :custom
-  ;; (typst-ts-mode-watch-options "--open"))
-
-(elpaca (typst-ts-mode
-         :host sourcehut
-         :repo "meow_king/typst-ts-mode"))
-
-(elpaca (ox-typst
-         :host github
-         :repo "https://github.com/jmpunkt/ox-typst"))
+                                        ; --- Eglot ---
 
 (with-eval-after-load 'eglot
   (add-to-list 'eglot-server-programs
@@ -84,30 +112,7 @@
 (add-hook 'typst-ts-mode-hook 'eglot-ensure)
 (add-hook 'typst-ts-mode-hook 'company-mode)
 
-(add-hook 'js-mode-hook 'eglot-ensure)
-
-;; (elpaca (typst-mode
-         ;; :type git
-         ;; :host github
-         ;; :repo "Ziqi-Yang/typst-mode.el"))
-
-;; (defvar lsp-language-id-configuration
-  ;; '("\\.typ$" . "typst"))
-;; 
-;; (lsp-register-client
- ;; (make-lsp-client :new-connection (lsp-stdio-connection
-                                   ;; "typst-lsp")
-                  ;; :major-modes '(typst-ts-mode)
-                 ;; :activation-fn (lsp-activate-on "typst")
-                 ;; :server-id 'typst-lsp))
-;; (add-hook 'typst-ts-mode-hook #'lsp)
-
-(use-package lsp-pyright
-  :ensure t
-  :hook (python-mode . (lambda () (require 'lsp-pyright)
-                         (lsp)))
-  :init (when (executable-find "python3")
-          (setq lsp-pyright-python-executable-cmd "python3")))
+(add-hook 'js-ts-mode-hook 'eglot-ensure)
 
 (provide 'languajes-configs)
 ;;; languajes-configs.el ends here

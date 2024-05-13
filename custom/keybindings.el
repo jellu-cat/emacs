@@ -2,6 +2,20 @@
 
 ;;; Commentary:
 
+;;; Code:
+
+(defun terminal-lauch ()
+  "Open a terminal in the current working directory."
+  (interactive)
+  (let
+      ((terminal-command
+        "wezterm start --class wezterm-emacs --cwd "))
+
+    (shell-command (concat terminal-command
+                           default-directory " &"))
+  )
+)
+
 ;; prevent esc from deleting windows
 (defadvice keyboard-escape-quit
   (around keyboard-escape-quit-dont-close-windows activate)
@@ -13,7 +27,8 @@
  "C-+" 'text-scale-increase
  "C--" 'text-scale-decrease
  "C-z" 'evil-normal-state
- "C-e" 'execute-extended-command)
+ "C-e" 'execute-extended-command
+ "C-t" 'terminal-lauch)
 
 (global-unset-key
  (kbd "C-SPC"))
@@ -86,13 +101,25 @@
 ;;  '("b" . buffer-cmd))
 
                                         ; --- god-mode ---
-(evil-define-key
-  'normal global-map " " 'evil-execute-in-god-state)
 
-(add-hook 'minibuffer-exit-hook (lambda ()
-                                  (god-mode -1)
-                                  (evil-normal-state)
-                                  (message "(!!)")))
+(general-define-key
+ :states 'god
+ "j" 'evil-normal-state
+ "k" 'evil-normal-state
+ "l" 'evil-normal-state
+ "u" 'evil-normal-state
+ )
+
+(general-define-key
+ :states 'normal
+ "SPC" 'evil-execute-in-god-state)
+
+;; (add-hook 'evil-god-state-exit-hook
+;;           (lambda ()
+;;             (if (eq evil-state 'god)
+;;                 (progn
+;;                   (message "gatito")
+;;                   (evil-normal-state)))))
 
                                         ; --- commenter ---
 (nvmap :prefix "g"
@@ -104,7 +131,7 @@
                                         ; --- elisp-mode ---
 (general-define-key
  :keymaps 'emacs-lisp-mode-map
-                    "C-c C-c" 'eval-buffer)
+ "C-c C-c" 'eval-buffer)
 
                                         ; --- helpful ---
 
@@ -114,6 +141,7 @@
 (global-set-key (kbd "C-h x") #'helpful-command)
 (global-set-key (kbd "C-c C-d") #'helpful-at-point)
 (global-set-key (kbd "C-h F") #'helpful-function)
+
 
 (provide 'keybindings)
 ;;; keybindings.el ends here

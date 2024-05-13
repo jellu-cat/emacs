@@ -5,6 +5,8 @@
 
 ;;; Code:
 
+(message "uwu")
+
 (add-to-list 'custom-theme-load-path "~/.config/emacs/themes")
 (load-theme 'catppuccin t)
 
@@ -16,19 +18,16 @@
 (catppuccin-set-color 'overlay0 "#acb0be" 'latte)
 
 (catppuccin-set-color 'lavender "#5b6cca" 'latte)
-(with-output-to-string (display-graphic-p))
-(message "uwu")
 
-(add-hook 'after-make-frame-functions
-          (lambda ()
-            (while (display-graphic-p)
-              (message "uwu")
-              ;;(setq catppuccin-flavor 'latte)
-              ;;(catppuccin-reload)
-              (message "owo")
-              )
-            )
-)
+(setq catppuccin-flavor 'latte)
+(catppuccin-reload)
+
+;; (if (display-graphic-p)
+    ;; (progn
+      ;; (setq catppuccin-flavor 'latte)
+      ;; (catppuccin-reload)
+      ;; (message "uwu")
+      ;; ))
 
 (provide 'catppuccin-config)
 ;;; catppuccin-config.el ends here.

@@ -116,6 +116,7 @@
   ;; :ensure t
   ;; :init
   ;; (savehist-mode))
+ (savehist-mode)
 
 (use-package harpoon
   :ensure t)
@@ -123,6 +124,7 @@
 ;; (use-package saveplace
   ;; :ensure t
   ;; :init (save-place-mode 1))
+(save-place-mode 1)
 
 (use-package workgroups2
   :ensure (:source "MELPA"))
@@ -136,7 +138,29 @@
 (use-package transient
   :ensure (:source "MELPA"))
 
+                                        ; --- shell ---
+
+;; (use-package terminal-here
+;;   :ensure (:source "MELPA")
+;;   :config
+;;   (setq terminal-here-linux-terminal-command '
+;;         ("wezterm" "start" "--class" "wezterm-emacs")))
+
+(use-package exec-path-from-shell
+  :config
+  (exec-path-from-shell-initialize))
+
                                         ; --- Aesthetics ---
+(use-package ef-themes)
+
+(use-package modus-themes)
+
+(use-package mixed-pitch
+  :config
+  (set-face-attribute 'variable-pitch nil
+		              :font "Iosevka Nerd Font" :weight 'medium )
+  :hook (text-mode . mixed-pitch-mode))
+
 (use-package highlight-indent-guides
   :ensure (:source "MELPA")
   :init
@@ -159,7 +183,10 @@
 (use-package dashboard
   :ensure t
   :config
-  (dashboard-setup-startup-hook))
+  (dashboard-setup-startup-hook)
+  (setq dashboard-startup-banner
+        "~/.config/emacs/banner.png")
+  )
 
 (use-package pulsar
   :ensure t
@@ -210,15 +237,19 @@
   (global-tree-sitter-mode)
   (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
  
- ;; (use-package tree-sitter-langs
-   ;; :ensure t)
+(use-package tree-sitter-langs
+  :ensure t
+  :after tree-sitter)
+
+(use-package treesit-auto
+  :ensure (:source "MELPA"))
  
 (use-package flycheck
   :hook (prog-mode . flycheck-mode)
   :ensure t)
 
 ;; (use-package eglot
-  ;; :ensure t)
+;;   :ensure t)
 
 (use-package lsp-mode
   :ensure t
@@ -272,10 +303,10 @@
   :ensure t
   :hook (prog-mode . format-all-mode))
 
-(use-package electric-operator
-  :ensure t
-  :hook ((prog-mode . electric-operator-mode)
-         (text-mode . electric-operator-mode)))
+;; (use-package electric-operator
+  ;; :ensure t
+  ;; :hook ((prog-mode . electric-operator-mode)
+         ;; (text-mode . electric-operator-mode)))
 
 ;; (use-package smartparens
 ;; :ensure t)
@@ -302,6 +333,14 @@
   :ensure t
   :hook org-mode)
 
+(use-package ox-typst
+  :ensure (
+           :host github
+           :repo "https://github.com/jmpunkt/ox-typst")
+  :after org
+  :config
+  ((add-to-list 'org-export-backends 'typst)))
+
                                         ; --- Web ---
 
 (use-package simple-httpd
@@ -321,7 +360,13 @@
                                         ; --- edit as sudo ---
 (use-package sudo-edit
   :ensure t)
-(elpaca-wait)
 
+
+                                        ; --- pdf ---
+(use-package pdf-tools
+  :ensure t
+  :config (pdf-tools-install))
+
+(elpaca-wait)
 (provide 'packages)
 ;;; packages.el ends here

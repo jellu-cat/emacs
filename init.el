@@ -49,5 +49,5 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("0d9028987183602b113c27e52e549b2eeb23fb29ebfc19ca0b6612fa57472066" "7776ba149258df15039b1f0aba4b180d95069b2589bc7d6570a833f05fdf7b6d" default))
+   '("cb8eb6d80c3908a53b0c8a98ab0cedd007c1f10593a5f0f1e2ee24eec241e3e0" "c1638a7061fb86be5b4347c11ccf274354c5998d52e6d8386e997b862773d1d2" "317754d03bb6d85b5a598480e1bbee211335bbf496d441af4992bbf1e777579e" "df1ed4aa97d838117dbda6b2d84b70af924b0380486c380afb961ded8a41c386" "4343cbc036f09361b2912119c63573433df725f599bfbdc16fb97f1e4847a08b" "0d9028987183602b113c27e52e549b2eeb23fb29ebfc19ca0b6612fa57472066" "7776ba149258df15039b1f0aba4b180d95069b2589bc7d6570a833f05fdf7b6d" default))
  '(package-selected-packages '(nix-mode lua-mode haskell-mode)))

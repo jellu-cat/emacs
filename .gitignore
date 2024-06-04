@@ -5,8 +5,8 @@ elpa
 .dap*
 eshell
 history
-#*
 ~*
+*#
 projectile-bookmarks.eld
 recentf
 history

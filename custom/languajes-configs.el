@@ -70,7 +70,8 @@
 
 (setq treesit-language-source-alist
    '((bash "https://github.com/tree-sitter/tree-sitter-bash")
-     (c "https://github.com/uyha/tree-sitter-cmake")
+     (c "https://github.com/tree-sitter/tree-sitter-c")
+     (cpp "https://github.com/tree-sitter/tree-sitter-cpp")
      (cmake "https://github.com/uyha/tree-sitter-cmake")
      (css "https://github.com/tree-sitter/tree-sitter-css")
      (elisp "https://github.com/Wilfred/tree-sitter-elisp")
@@ -88,8 +89,7 @@
      (typst "https://github.com/uben0/tree-sitter-typst"))
    )
 
-;(mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist))
-
+;; (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist))
 
 (add-hook 'prog-mode-hook
           (lambda ()

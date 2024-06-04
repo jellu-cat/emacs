@@ -98,6 +98,10 @@
 					    (abbreviate-file-name (buffer-file-name))
 					  "%b"))))
 
+(add-to-list 'display-buffer-alist
+             '("*Async Shell Command*" .
+               (display-buffer-no-window . nil)))
+
 
 (provide 'faces-ui)
 ;;; faces-ui.el ends here

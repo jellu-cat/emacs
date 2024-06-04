@@ -239,7 +239,9 @@
  
 (use-package tree-sitter-langs
   :ensure t
-  :after tree-sitter)
+  :after tree-sitter
+  ;; :config (tree-sitter-require-grammar c)
+  )
 
 (use-package treesit-auto
   :ensure (:source "MELPA"))
@@ -338,8 +340,9 @@
            :host github
            :repo "https://github.com/jmpunkt/ox-typst")
   :after org
-  :config
-  ((add-to-list 'org-export-backends 'typst)))
+  ;; :config
+  ;; ((add-to-list 'org-export-backends 'typst))
+  )
 
                                         ; --- Web ---
 

@@ -1,1 +1,0 @@
-("~/repos/emacs/" "~/repos/scripts/" "~/repos/dotfiles/")
